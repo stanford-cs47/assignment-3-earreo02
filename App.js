@@ -1,19 +1,11 @@
-/*
-*
-* Assignment 3
-* Starter Files
-*
-* CS47
-* Oct, 2018
-*/
-
-import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, SafeAreaView, ActivityIndicator } from 'react-native';
 import { Images, Colors } from './App/Themes'
 import APIRequest from './App/Config/APIRequest'
 
 import News from './App/Components/News'
 import Search from './App/Components/Search'
+import Logo from './App/Components/Logo'
 
 export default class App extends React.Component {
 
@@ -27,7 +19,7 @@ export default class App extends React.Component {
   componentDidMount() {
 
     //uncomment this to run an API query!
-    //this.loadArticles();
+    this.loadArticles();
   }
 
   async loadArticles(searchTerm = '', category = '') {
@@ -42,28 +34,41 @@ export default class App extends React.Component {
     this.setState({loading: false, articles: resultArticles})
   }
 
-  render() {
+  getArticleContent = () => {
     const {articles, loading} = this.state;
 
+    let contentDisplated = null;
+
+    if (loading) {
+      contentDisplated = <ActivityIndicator style = {styles.activityIndicator}
+                                            size = "large"
+                                            color = "black" />;
+    } else {
+      contentDisplated = <News articles = {articles} />;
+    }
+    return (
+      <View style= {{flex:1}}>
+        {contentDisplated}
+      </View>
+    )
+  }
+
+  render() {
     return (
       <SafeAreaView style={styles.container}>
-
-        <Text style={{textAlign: 'center'}}>Have fun! :) {"\n"} Start by changing the API Key in "./App/Config/AppConfig.js" {"\n"} Then, take a look at the following components: {"\n"} NavigationButtons {"\n"} Search {"\n"} News {"\n"} 🔥</Text>
-
-        {/*First, you'll need a logo*/}
-
-        {/*Then your search bar*/}
-
-        {/*And some news*/}
-
-        {/*Though, you can style and organize these however you want! power to you 😎*/}
-
-        {/*If you want to return custom stuff from the NYT API, checkout the APIRequest file!*/}
-
+        <Logo/>
+        <Search getQuery = {this.loadArticles}/>
+        <View style = {{flex: 8}}>
+          {this.getArticleContent}
+        </View>
       </SafeAreaView>
     );
   }
 }
+{/*<Text style={{textAlign: 'center'}}>Have fun! :) {"\n"} Start by changing the API Key in "./App/Config/AppConfig.js" {"\n"} Then, take a look at the following components: {"\n"} NavigationButtons {"\n"} Search {"\n"} News {"\n"} 🔥</Text>*/}
+{/*First, you'll need a logo*/}
+{/*Then your search bar*/}
+{/*And some news*/}
 
 const styles = StyleSheet.create({
   container: {

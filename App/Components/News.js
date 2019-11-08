@@ -26,6 +26,7 @@ export default class News extends Component {
     const {articles} = this.props;
 
     return (
+      
       <View style={styles.container}>
         {/*Some FlatList or SectionList*/}
         <FlatList

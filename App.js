@@ -22,7 +22,7 @@ export default class App extends React.Component {
     this.loadArticles();
   }
 
-  async loadArticles(searchTerm = '', category = '') {
+  loadArticles = async(searchTerm = '', category = '') => {
     this.setState({articles:[], loading: true});
     var resultArticles = [];
     if (category === '') {
@@ -57,9 +57,9 @@ export default class App extends React.Component {
     return (
       <SafeAreaView style={styles.container}>
         <Logo/>
-        <Search getQuery = {this.loadArticles}/>
-        <View style = {{flex: 8}}>
-          {this.getArticleContent}
+        <Search getSearch={this.loadArticles}/>
+        <View style={{flex:6, justifyContent: 'center'}}>
+          {this.getArticleContent()}
         </View>
       </SafeAreaView>
     );

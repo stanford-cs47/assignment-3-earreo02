@@ -9,9 +9,10 @@
 
 import React, { Component, useState } from 'react'
 import PropTypes from 'prop-types' //consider using this!
-import { StyleSheet, SafeAreaView, View, FlatList, Text, Linking } from 'react-native'
+import { StyleSheet, SafeAreaView, View, FlatList, Text, Linking, ListItem, TouchableOpacity } from 'react-native'
 import { material } from 'react-native-typography' //consider using this!
 import { Metrics, Colors } from '../Themes'
+import * as WebBrowser from 'expo-web-browser'
 
 export default class News extends Component {
   static defaultProps = { articles: [] }
@@ -21,23 +22,24 @@ export default class News extends Component {
   }
 
   //you can change the props above to whatever you want/need.
+  webAction = (item) => WebBrowser.openBrowserAsync(item.url);
 
   render () {
     const {articles} = this.props;
-
     return (
-      
+
       <View style={styles.container}>
-        {/*Some FlatList or SectionList*/}
         <FlatList
-          data = {props.articles}
+          data = {articles}
           renderItem= {({item}) => (
-            <Item
-              id = {item.id}
-              title = {item.title}
-              selected = {!!selected.get(item.id)}
-              onSelect= {onSelect}
-            />
+            <TouchableOpacity onPress={() => this.webAction(item)}>
+              <View style={styles.news}>
+                <Text style={material.headline}>{item.title}</Text>
+                <Text>{item.snippet}</Text>
+                <Text style={{fontWeight: 'bold'}}>{item.byline}</Text>
+                <Text>{item.date}</Text>
+              </View>
+            </TouchableOpacity>
           )}
           renderSectionHeader = {({section}) =>
             <View style = {styles.header}>
@@ -45,7 +47,7 @@ export default class News extends Component {
             </View>
           }
           ItemSeparatorComponent = {() => ( <View style = {{height: 15}}/>)}
-          keyExtractor = {item => item.id}
+          keyExtractor = {(item) => item.title}
           contentContainerStyle = {styles.itemContainer}
         />
       </View>
@@ -64,8 +66,8 @@ const styles = StyleSheet.create({
   },
   news:{
     width: Metrics.width,
-    marginLeft: 15,
-    marginRight: 15,
+    marginLeft: 18,
+    marginRight: 18,
     alignItems: 'flex-start'
   }
 });

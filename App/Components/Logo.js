@@ -5,7 +5,7 @@ import {Images, Metrics} from '../Themes'
 export default function Logo() {
   return (
     <View style = {styles.container} >
-      <Image style = {styles.image} source = {Images.logo} />
+      <Image style = {styles.logo} source = {Images.logo} resizeMode = "contain" />
     </View>
   )
 }
@@ -17,6 +17,5 @@ const styles = StyleSheet.create({
   logo: {
     width: Metrics.screenWidth,
     height: Metrics.images.logo/2,
-    resizeMode: 'contain',
   },
 });
